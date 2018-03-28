@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "207781150850-koh32ru64pfg3o29jt7lhnbucs00spq8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "bogobikes.app",
+            "certificate_hash": "f8a14b8e36500ee6ff4e14f04f2db289c2e25078"
+          }
+        },
+        {
           "client_id": "207781150850-a99ts44i50e5pm0hpnc0t0ujtrbrvqi5.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "207781150850-a99ts44i50e5pm0hpnc0t0ujtrbrvqi5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
