@@ -40,7 +40,7 @@
         android:layout_height="50dp"
         android:layout_below="@+id/usuario"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/contraseña" />
+        android:background="@drawable/contrasena" />
 
     <Button
         android:id="@+id/login"
