@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "207781150850",
+    "firebase_url": "https://bogobikes-1522173122810.firebaseio.com",
+    "project_id": "bogobikes-1522173122810",
+    "storage_bucket": "bogobikes-1522173122810.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207781150850:android:01586e5ed582e5d9",
+        "android_client_info": {
+          "package_name": "bogobikes.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "207781150850-a99ts44i50e5pm0hpnc0t0ujtrbrvqi5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBT2x71zvNS6aQRX5T-KsN5ItzOTVAxD6g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
