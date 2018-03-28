@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="bogobikes.app.Login">
+
+    <ImageView
+        android:id="@+id/fondo"
+        android:layout_width="match_parent"
+        android:layout_height="172dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/fondo"
+        tools:ignore="ContentDescription"/>
+
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="130dp"
+        android:layout_height="135dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="98dp"
+        android:src="@drawable/logo"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/usuario"
+        android:layout_width="228dp"
+        android:layout_height="73dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="278dp"
+        android:src="@drawable/Usuario" />
+
+    <ImageView
+        android:id="@+id/contraseña"
+        android:layout_width="228dp"
+        android:layout_height="72dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="270dp"
+        android:src="@drawable/contraseña" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="228dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="184dp"
+        android:background="@drawable/LoginButton" />
+
+    <TextView
+        android:layout_width="115dp"
+        android:layout_height="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="249dp"
+        android:background="@drawable/WelcomeBackTitle" />
+
+    <Button
+        android:id="@+id/recordarme"
+        android:layout_width="130dp"
+        android:layout_height="18dp"
+        android:layout_below="@+id/contraseña"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-270dp"
+        android:background="@drawable/RememberMe" />
+
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="13dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="148dp"
+        android:background="@drawable/or" />
+
+    <Button
+        android:id="@+id/face"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="85dp"
+        android:layout_marginStart="112dp"
+        android:background="@drawable/facebookbutton" />
+
+    <Button
+        android:id="@+id/twitter"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_alignTop="@+id/face"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/twitterbutton" />
+
+    <Button
+        android:id="@+id/google"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/face"
+        android:layout_marginEnd="111dp"
+        android:background="@drawable/googlebutton" />
+
+    <Button
+        android:id="@+id/crear"
+        android:layout_width="190dp"
+        android:layout_height="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="38dp"
+        android:background="@drawable/DontHaveAcc" />
+
+</RelativeLayout>
