@@ -1,18 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="bogobikes.app.Login">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/fondo"
+        android:layout_width="match_parent"
+        android:layout_height="172dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/fondo"
+        tools:ignore="ContentDescription" />
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="130dp"
+        android:layout_height="135dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:src="@drawable/logo"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/usuario"
+        android:layout_width="228dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="@+id/hola"
+        android:layout_below="@+id/hola"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/Usuario" />
+
+    <TextView
+        android:id="@+id/password"
+        android:layout_width="228dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/usuario"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/contraseña" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="228dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="@+id/recordarme"
+        android:layout_below="@+id/recordarme"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/LoginButton" />
+
+    <TextView
+        android:id="@+id/hola"
+        android:layout_width="115dp"
+        android:layout_height="20dp"
+        android:layout_alignParentTop="@+id/logo"
+        android:layout_below="@+id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/WelcomeBackTitle" />
+
+    <Button
+        android:id="@+id/recordarme"
+        android:layout_width="130dp"
+        android:layout_height="18dp"
+        android:layout_below="@+id/password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/RememberMe" />
+
+    <TextView
+        android:id="@+id/redes"
+        android:layout_width="70dp"
+        android:layout_height="13dp"
+        android:layout_alignParentTop="@+id/login"
+        android:layout_below="@+id/login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/or" />
+
+    <Button
+        android:id="@+id/face"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="@+id/redes"
+        android:layout_below="@+id/redes"
+        android:layout_marginStart="112dp"
+        android:layout_marginLeft="112dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/facebookbutton" />
+
+    <Button
+        android:id="@+id/twitter"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_alignTop="@+id/face"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/twitterbutton" />
+
+    <Button
+        android:id="@+id/google"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/face"
+        android:layout_marginEnd="111dp"
+        android:layout_marginRight="111dp"
+        android:background="@drawable/googlebutton" />
+
+    <Button
+        android:id="@+id/crear"
+        android:layout_width="200dp"
+        android:layout_height="20dp"
+        android:layout_alignParentTop="@+id/redes"
+        android:layout_below="@+id/redes"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:background="@drawable/DontHaveAcc" />
+
+</RelativeLayout>
