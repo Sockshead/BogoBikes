@@ -48,8 +48,8 @@ public class Login extends AppCompatActivity {
         mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              //  Intent Reg = new Intent(Login.this,Registro.class);
-               // startActivity(Reg);
+                Intent Reg = new Intent(Login.this,Registro.class);
+                startActivity(Reg);
             }
         });
     }
