@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -66,7 +65,7 @@ public class Login extends AppCompatActivity {
         String password = mPassword.getText().toString().trim();
         //Check if fields are empty.
         if(!TextUtils.isEmpty(email)&&!TextUtils.isEmpty(password)) {
-            mProgress.setMessage("Iniciando Sesión");
+            mProgress.setMessage("Iniciando Sesión...");
             mProgress.show();
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -99,7 +98,6 @@ public class Login extends AppCompatActivity {
         }
 
     }
-
 
 }
 
