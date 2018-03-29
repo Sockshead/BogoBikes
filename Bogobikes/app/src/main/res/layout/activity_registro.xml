@@ -35,8 +35,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:background="@drawable/reg" />
-    <TextView
-        android:id="@+id/nombre"
+    <EditText
+        android:id="@+id/txtNombre"
         android:layout_width="228dp"
         android:layout_height="50dp"
         android:layout_below="@+id/registrarse"
@@ -44,23 +44,23 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/nombre" />
 
-    <TextView
-        android:id="@+id/email"
+    <EditText
+        android:id="@+id/txtEmail"
         android:layout_width="228dp"
         android:layout_height="50dp"
         android:layout_below="@+id/nombre"
         android:layout_centerHorizontal="true"
         android:background="@drawable/email" />
 
-    <TextView
-        android:id="@+id/cedula"
+    <EditText
+        android:id="@+id/txtCedula"
         android:layout_width="228dp"
         android:layout_height="50dp"
         android:layout_below="@+id/email"
         android:layout_centerHorizontal="true"
         android:background="@drawable/cedula" />
-    <TextView
-        android:id="@+id/pass"
+    <EditText
+        android:id="@+id/txtPass"
         android:layout_width="228dp"
         android:layout_height="50dp"
         android:layout_below="@+id/cedula"
@@ -68,7 +68,7 @@
         android:background="@drawable/contrasena2" />
 
     <Button
-        android:id="@+id/reg"
+        android:id="@+id/btnReg"
         android:layout_width="228dp"
         android:layout_height="50dp"
         android:layout_below="@+id/pass"
