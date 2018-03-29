@@ -36,7 +36,7 @@ public class Registro extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         myRef = mDatabase.getReference();
         mName = findViewById(R.id.txtNombre);
-        mUser = findViewById(R.id.txtUsuario);
+        mUser = findViewById(R.id.txtEmail);
         mCedula = findViewById(R.id.txtCedula);
         mPassword = findViewById(R.id.txtPass);
         mAuth = FirebaseAuth.getInstance();
