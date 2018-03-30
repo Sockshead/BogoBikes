@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Bogobikes</string>
+    <string name="title_activity_mapa_parq">Map</string>
 </resources>
