@@ -78,6 +78,9 @@ public class Login extends AppCompatActivity {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 Toast.makeText(Login.this, "Datos Correctos",
                                         Toast.LENGTH_SHORT).show();
+
+                                Intent afterLog = new Intent(Login.this,mapaParq.class);
+                                startActivity(afterLog);
                             } else {
                                 // If sign in fails.
                                 mProgress.dismiss();
