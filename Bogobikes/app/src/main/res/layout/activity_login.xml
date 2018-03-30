@@ -10,39 +10,55 @@
         android:id="@+id/fondo"
         android:layout_width="match_parent"
         android:layout_height="172dp"
-        android:scaleType="centerCrop"
+        android:layout_alignParentTop="true"
         android:src="@drawable/fondo"
         tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="130dp"
-        android:layout_height="135dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp"
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:layout_below="@id/fondo"
+        android:layout_marginTop="-130dp"
         android:src="@drawable/logo"
         tools:ignore="ContentDescription" />
 
+    <TextView
+        android:id="@+id/hola"
+        android:layout_width="115dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/logo"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/welcomebacktitle" />
+
     <EditText
         android:id="@+id/txtUsuario"
-        android:layout_width="228dp"
+        android:layout_width="230dp"
         android:layout_height="50dp"
-        android:layout_alignParentTop="@+id/hola"
         android:layout_below="@+id/hola"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_marginTop="15dp"
-        android:inputType="textEmailAddress"
-        android:background="@drawable/usuario" />
+        android:background="@drawable/usuario"
+        android:inputType="textEmailAddress" />
 
     <EditText
         android:id="@+id/txtPassword"
-        android:layout_width="228dp"
+        android:layout_width="230dp"
         android:layout_height="50dp"
         android:layout_below="@+id/txtUsuario"
         android:layout_centerHorizontal="true"
-        android:inputType="textPassword"
-        android:background="@drawable/contrasena" />
+        android:background="@drawable/contrasena"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/recordarme"
+        android:layout_width="130dp"
+        android:layout_height="18dp"
+        android:layout_below="@+id/txtPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/rememberme" />
 
     <Button
         android:id="@+id/btnLogin"
@@ -55,31 +71,11 @@
         android:background="@drawable/loginbutton" />
 
     <TextView
-        android:id="@+id/hola"
-        android:layout_width="115dp"
-        android:layout_height="20dp"
-        android:layout_alignParentTop="@+id/logo"
-        android:layout_below="@+id/logo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/welcomebacktitle" />
-
-    <Button
-        android:id="@+id/recordarme"
-        android:layout_width="130dp"
-        android:layout_height="18dp"
-        android:layout_below="@+id/txtPassword"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/rememberme" />
-
-    <TextView
         android:id="@+id/redes"
-        android:layout_width="70dp"
-        android:layout_height="13dp"
-        android:layout_alignParentTop="@+id/btnLogin"
+        android:layout_width="130dp"
+        android:layout_height="20dp"
         android:layout_below="@+id/btnLogin"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_marginTop="15dp"
         android:background="@drawable/or" />
 
@@ -87,13 +83,12 @@
         android:id="@+id/btnFace"
         android:layout_width="47dp"
         android:layout_height="47dp"
-        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="@+id/redes"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/redes"
-        android:layout_marginStart="112dp"
-        android:layout_marginLeft="112dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginLeft="90dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/facebookbutton" />
 
     <Button
@@ -101,7 +96,7 @@
         android:layout_width="47dp"
         android:layout_height="47dp"
         android:layout_alignTop="@+id/btnFace"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:background="@drawable/twitterbutton" />
 
     <Button
@@ -111,19 +106,16 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/btnFace"
-        android:layout_marginEnd="111dp"
-        android:layout_marginRight="111dp"
+        android:layout_marginEnd="90dp"
+        android:layout_marginRight="90dp"
         android:background="@drawable/googlebutton" />
 
     <Button
         android:id="@+id/btnCrear"
         android:layout_width="200dp"
-        android:layout_height="27dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="52dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/btnFace"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
         android:background="@drawable/donthaveacc" />
-
-
-
 </RelativeLayout>
