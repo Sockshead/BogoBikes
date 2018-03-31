@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Perfil">
+
+    <ImageView
+        android:id="@+id/imgmujer"
+        android:layout_width="78dp"
+        android:layout_height="79dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:src="@drawable/mujer" />
+
+    <ImageView
+        android:id="@+id/line"
+        android:layout_width="333dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:src="@drawable/line" />
+
+    <TextView
+        android:id="@+id/nombre2"
+        android:layout_width="77dp"
+        android:layout_height="24dp"
+        android:layout_alignBottom="@+id/line"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="9dp"
+        android:background="@drawable/nombre2" />
+    <ImageView
+        android:id="@+id/line2"
+        android:layout_width="333dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/line"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/line" />
+
+    <TextView
+        android:id="@+id/cedula2"
+        android:layout_width="76dp"
+        android:layout_height="21dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="255dp"
+        android:background="@drawable/cedula2" />
+
+    <ImageView
+        android:id="@+id/line3"
+        android:layout_width="333dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="259dp"
+        android:src="@drawable/line" />
+
+    <TextView
+        android:id="@+id/email2"
+        android:layout_width="61dp"
+        android:layout_height="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="275dp"
+        android:background="@drawable/email2" />
+    <ImageView
+        android:id="@+id/line4"
+        android:layout_width="333dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="152dp"
+        android:src="@drawable/line" />
+
+    <Button
+        android:id="@+id/codigo"
+        android:layout_width="170dp"
+        android:layout_height="53dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="93dp"
+        android:background="@drawable/actionbutton" />
+
+
+</RelativeLayout>
