@@ -1,6 +1,8 @@
 package bogobikes.app;
 
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -19,13 +21,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.io.IOException;
+import java.util.List;
 
 public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         GoogleMap.OnMarkerClickListener,
-        LocationListener{
+        LocationListener {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap mMap;
@@ -42,7 +48,7 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        if(mGoogleApiClient == null){
+        if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
@@ -52,62 +58,70 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-        LatLng myPlace = new LatLng(50,-50);
-
-        mMap.setMapType(map.MAP_TYPE_HYBRID);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setOnMarkerClickListener(this);
+    }
 
-        /*Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
+    private void setUpMap() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]
+                    {android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
+                    placeMarkeronMap(currentLoc);
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 17));
+                }
+            }
+        });
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         super.onStop();
-        if(mGoogleApiClient != null && mGoogleApiClient.isConnected()){
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
     }
 
-    private void setUpMap(){
-        if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]
-                    {android.Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_PERMISSION_REQUEST_CODE);
-            return;
-        }
-        mMap.setMyLocationEnabled(true);
+    protected void placeMarkeronMap(LatLng location) {
+        MarkerOptions markerOptions = new MarkerOptions().position(location);
+        String titleStr = this.getAddress(location);
+        markerOptions.title(titleStr);
 
-        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>(){
-            @Override
-            public void onSuccess(Location location) {
-                if(location != null){
-                    LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 17));
+        mMap.addMarker(markerOptions);
+    }
+
+    private String getAddress(LatLng latLng){
+        Geocoder geocoder = new Geocoder(this);
+        String addressText = " ";
+        List<Address> addresses = null;
+        Address address = null;
+        try{
+            addresses = geocoder.getFromLocation(latLng.latitude,latLng.longitude, 1);
+            if(null != addresses && !addresses.isEmpty()){
+                address = addresses.get(0);
+                for (int i=0;i<address.getMaxAddressLineIndex();i++){
+                    addressText += (i==0)?address.getAddressLine(i):("\n" + address.getAddressLine(i));
                 }
             }
-        });
+        }catch (IOException e){
+        }return addressText;
     }
 
     @Override
