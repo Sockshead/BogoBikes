@@ -79,7 +79,10 @@ public class Login extends AppCompatActivity {
                                 Toast.makeText(Login.this, "Datos Correctos",
                                         Toast.LENGTH_SHORT).show();
 
-                                Intent afterLog = new Intent(Login.this,mapaParq.class);
+                                /*Intent afterLog = new Intent(Login.this,mapaParq.class);
+                                startActivity(afterLog);*/
+
+                                Intent afterLog = new Intent(Login.this,Perfil.class);
                                 startActivity(afterLog);
                             } else {
                                 // If sign in fails.
