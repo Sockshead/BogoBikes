@@ -77,33 +77,7 @@ public class Registro extends AppCompatActivity {
                                 final FirebaseUser user = mAuth.getCurrentUser();
                                 mProgress.setMessage("Iniciando Sesión...");
                                 mProgress.show();
-                                mAuth.signInWithEmailAndPassword(email, password)
-                                        .addOnCompleteListener(Registro.this, new OnCompleteListener<AuthResult>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                                mProgress.dismiss();
-                                                mProgress.setMessage("Iniciando Sesión...");
-                                                mProgress.show();
-                                                if (task.isSuccessful()) {
-                                                    // Sign in success.
-                                                    myRef.child("Users");
-                                                    myRefCU = myRef.child(user.getUid());
-                                                    myRefCU.child("Name").setValue(name);
-                                                    myRefCU.child("Email").setValue(user);
-                                                    myRefCU.child("Cedula").setValue(cedula);
-                                                    mProgress.dismiss();
-                                                    Log.d(TAG, "signInWithEmail:success");
-
-                                                } else {
-                                                    // If sign in fails.
-                                                    mProgress.dismiss();
-                                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                                    Toast.makeText(Registro.this, "Datos Incorrectos",
-                                                            Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                        });
-
+                                loginR(email,password,name,Integer.parseInt(cedula));
                             } else {
                                 // If sign in fails.
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -130,5 +104,36 @@ public class Registro extends AppCompatActivity {
                 mCedula.setError("Ingrese un numero de Cedula");
             }
         }
+    }
+    private void loginR (final String emailL, String passwordL, final String nameL, final int cedulaL){
+        mAuth.signInWithEmailAndPassword(emailL, passwordL)
+                .addOnCompleteListener(Registro.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        mProgress.dismiss();
+                        mProgress.setMessage("Iniciando Sesión...");
+                        mProgress.show();
+                        if (task.isSuccessful()) {
+                            // Sign in success.
+                            myRef.child("Users");
+                            myRefCU = myRef.child(user.getUid());
+                            myRefCU.child("Name").setValue(nameL);
+                            myRefCU.child("Email").setValue(emailL);
+                            myRefCU.child("Cedula").setValue(cedulaL);
+                            mProgress.dismiss();
+                            Log.d(TAG, "signInWithEmail:success");
+
+                        } else {
+                            // If sign in fails.
+                            mProgress.dismiss();
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(Registro.this, "Datos Incorrectos",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
     }
 }

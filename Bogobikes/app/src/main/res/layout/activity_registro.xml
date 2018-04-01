@@ -37,6 +37,8 @@
         android:background="@drawable/reg" />
     <EditText
         android:id="@+id/txtNombre"
+        android:hint="Nombre"
+        android:paddingLeft="15dp"
         android:layout_width="228dp"
         android:layout_height="50dp"
         android:layout_below="@+id/registrarse"
@@ -47,6 +49,8 @@
 
     <EditText
         android:id="@+id/txtEmail"
+        android:hint="EMail"
+        android:paddingLeft="15dp"
         android:layout_width="228dp"
         android:layout_height="50dp"
         android:layout_below="@+id/txtNombre"
@@ -55,6 +59,8 @@
         android:background="@drawable/email" />
 
     <EditText
+        android:hint="Cédula"
+        android:paddingLeft="15dp"
         android:id="@+id/txtCedula"
         android:layout_width="228dp"
         android:layout_height="50dp"
@@ -64,6 +70,8 @@
         android:background="@drawable/cedula" />
     <EditText
         android:id="@+id/txtPass"
+        android:hint="Contraseña"
+        android:paddingLeft="15dp"
         android:layout_width="228dp"
         android:layout_height="50dp"
         android:layout_below="@+id/txtCedula"
