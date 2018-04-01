@@ -26,6 +26,19 @@ public class Login extends AppCompatActivity {
     private Button mLogin,mRegister;
     private ProgressDialog mProgress;
     private String TAG = "Login";
+    private Boolean logedIn = false;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            logedIn = true;
+            //Intent afterLog = new Intent(Login.this,Perfil.class);
+            //startActivity(afterLog);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +66,7 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-    }
+
 
     private void Login() {
         String email = mUser.getText().toString().trim();
