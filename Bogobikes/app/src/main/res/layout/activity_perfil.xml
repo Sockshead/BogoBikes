@@ -24,7 +24,7 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/nombre2" />
 
-    <ImageView
+    <TextView
         android:id="@+id/line"
         android:layout_width="330dp"
         android:layout_height="50dp"
@@ -42,7 +42,7 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/cedula2" />
 
-    <ImageView
+    <TextView
         android:id="@+id/line2"
         android:layout_width="330dp"
         android:layout_height="50dp"
@@ -60,7 +60,7 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/email2" />
 
-    <ImageView
+    <TextView
         android:id="@+id/line3"
         android:layout_width="330dp"
         android:layout_height="50dp"

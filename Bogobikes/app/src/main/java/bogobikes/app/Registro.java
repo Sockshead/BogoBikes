@@ -34,7 +34,7 @@ public class Registro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
         mDatabase = FirebaseDatabase.getInstance();
-        myRef = mDatabase.getReference();
+        myRef = mDatabase.getReference().child("Users");
         mName = findViewById(R.id.txtNombre);
         mUser = findViewById(R.id.txtEmail);
         mCedula = findViewById(R.id.txtCedula);
@@ -116,11 +116,11 @@ public class Registro extends AppCompatActivity {
                         mProgress.show();
                         if (task.isSuccessful()) {
                             // Sign in success.
-                            myRef.child("Users");
                             myRefCU = myRef.child(user.getUid());
                             myRefCU.child("Name").setValue(nameL);
                             myRefCU.child("Email").setValue(emailL);
                             myRefCU.child("Cedula").setValue(cedulaL);
+                            myRefCU.child("Profile Image").setValue("Default");
                             mProgress.dismiss();
                             Log.d(TAG, "signInWithEmail:success");
 
@@ -133,7 +133,5 @@ public class Registro extends AppCompatActivity {
                         }
                     }
                 });
-
-
     }
 }
