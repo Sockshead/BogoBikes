@@ -1,5 +1,6 @@
 package bogobikes.app;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,7 +11,12 @@ import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,7 +25,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.math.BigInteger;
+import java.security.SecureRandom;
 
 public class Perfil extends AppCompatActivity {
     FirebaseAuth mAuth;
@@ -47,7 +57,7 @@ public class Perfil extends AppCompatActivity {
         mStorage = FirebaseStorage.getInstance();
         mySRef =mStorage.getReference();
         mDatabase = FirebaseDatabase.getInstance();
-        myDBRef = mDatabase.getReference().child("users");
+        myDBRef = mDatabase.getReference().child("Users");
         name = findViewById(R.id.line);
         cedula = findViewById(R.id.line2);
         email = findViewById(R.id.line3);
@@ -96,5 +106,82 @@ public class Perfil extends AppCompatActivity {
             }
         };
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode==CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
+            if(mAuth.getCurrentUser()==null)
+                return;
+            mProgressDialog.setMessage("Subiendo Imagen");
+            mProgressDialog.show();
+            final Uri uri = data.getData();
+            if(uri==null){
+                mProgressDialog.dismiss();
+                return;
+            }
+            if(mySRef == null){
+                mySRef = mStorage.getReference();
+            }
+            if(myDBRef == null){
+                myDBRef = mDatabase.getReference().child("Users");
+            }
+
+            final StorageReference filePath = mySRef.child("Photos").child(getRandomString());
+            final DatabaseReference currentUserDB = myDBRef.child(mAuth.getCurrentUser().getUid());
+            currentUserDB.child("Profile Image").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String image =dataSnapshot.getValue().toString();
+                    if(!image.equals("Default")&&!image.isEmpty()){
+                        Task<Void> task = FirebaseStorage.getInstance().getReferenceFromUrl(image).delete();
+                        task.addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    Toast.makeText(Perfil.this,"Imagen Borrada correctamente",Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    Toast.makeText(Perfil.this,"Error al eliminar Imagen",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                    currentUserDB.child("Profile Image").removeEventListener(this);
+                    filePath.putFile(uri).addOnSuccessListener(Perfil.this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            mProgressDialog.dismiss();
+                            Uri downloadUri = taskSnapshot.getDownloadUrl();
+                            Toast.makeText(Perfil.this,"Finished",Toast.LENGTH_SHORT).show();
+                            Picasso.with(Perfil.this).load(uri).fit().centerCrop().into(imgProf);
+                            DatabaseReference currentUserDB = myDBRef.child(mAuth.getCurrentUser().getUid());
+                            currentUserDB.child("Profile Image").setValue(downloadUri.toString());
+                        }
+                    }).addOnFailureListener(Perfil.this, new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            mProgressDialog.dismiss();
+                            Toast.makeText(Perfil.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+
+
+    }
+    public String getRandomString() {
+        SecureRandom random = new SecureRandom();
+        return new BigInteger(130, random).toString(32);
     }
 }
