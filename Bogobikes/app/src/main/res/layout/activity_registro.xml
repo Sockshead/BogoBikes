@@ -11,18 +11,17 @@
         android:id="@+id/fondo"
         android:layout_width="match_parent"
         android:layout_height="172dp"
-        android:scaleType="centerCrop"
+        android:layout_alignParentTop="true"
         android:src="@drawable/fondo"
-        tools:ignore="ContentDescription"/>
+        tools:ignore="ContentDescription" />
 
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="130dp"
-        android:layout_height="135dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="98dp"
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:layout_below="@id/fondo"
+        android:layout_marginTop="-130dp"
         android:src="@drawable/logo"
         tools:ignore="ContentDescription" />
 
@@ -30,19 +29,18 @@
         android:id="@+id/registrarse"
         android:layout_width="115dp"
         android:layout_height="20dp"
-        android:layout_alignParentTop="@+id/logo"
         android:layout_below="@+id/logo"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_marginTop="15dp"
         android:background="@drawable/reg" />
     <EditText
         android:id="@+id/txtNombre"
         android:hint="Nombre"
         android:paddingLeft="15dp"
-        android:layout_width="228dp"
+        android:layout_width="230dp"
         android:layout_height="50dp"
         android:layout_below="@+id/registrarse"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_marginTop="15dp"
         android:inputType="text"
         android:background="@drawable/nombre" />
@@ -51,10 +49,10 @@
         android:id="@+id/txtEmail"
         android:hint="EMail"
         android:paddingLeft="15dp"
-        android:layout_width="228dp"
+        android:layout_width="230dp"
         android:layout_height="50dp"
         android:layout_below="@+id/txtNombre"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:inputType="textEmailAddress"
         android:background="@drawable/email" />
 
@@ -62,30 +60,30 @@
         android:hint="Cédula"
         android:paddingLeft="15dp"
         android:id="@+id/txtCedula"
-        android:layout_width="228dp"
+        android:layout_width="230dp"
         android:layout_height="50dp"
         android:layout_below="@+id/txtEmail"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:inputType="number"
         android:background="@drawable/cedula" />
     <EditText
         android:id="@+id/txtPass"
         android:hint="Contraseña"
         android:paddingLeft="15dp"
-        android:layout_width="228dp"
+        android:layout_width="230dp"
         android:layout_height="50dp"
         android:layout_below="@+id/txtCedula"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:inputType="textPassword"
         android:background="@drawable/contrasena2" />
 
     <Button
         android:id="@+id/btnReg"
-        android:layout_width="228dp"
+        android:layout_width="230dp"
         android:layout_height="50dp"
         android:layout_below="@+id/txtPass"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
         android:background="@drawable/regboton" />
 
 
@@ -93,9 +91,9 @@
         android:id="@+id/btnLogin"
         android:layout_width="200dp"
         android:layout_height="20dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="52dp"
+        android:layout_below="@+id/btnReg"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
         android:background="@drawable/haveacc" />
 
 </RelativeLayout>
