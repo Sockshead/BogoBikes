@@ -82,13 +82,19 @@ public class Perfil extends AppCompatActivity {
                    myDBRef.child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                        @Override
                        public void onDataChange(DataSnapshot dataSnapshot) {
+                           mProgressDialog.setMessage("Cargando Perfil");
+                           mProgressDialog.show();
                            name.setText(String.valueOf(dataSnapshot.child("Name").getValue()));
                            cedula.setText(String.valueOf(dataSnapshot.child("Cedula").getValue()));
                            email.setText(String.valueOf(dataSnapshot.child("Email").getValue()));
-                           String imgURL = String.valueOf(dataSnapshot.child("Profile Image"));
+                           String imgURL = String.valueOf(dataSnapshot.child("Profile Image").getValue());
                            if(URLUtil.isValidUrl(imgURL)){
-                               Picasso.with(Perfil.this).load(Uri.parse(imgURL)).into(imgProf);
+                               Picasso.with(Perfil.this).load(Uri.parse(imgURL)).fit().centerCrop().into(imgProf);
                            }
+                           else{
+                               System.out.println("URL no valida");
+                           }
+                           mProgressDialog.dismiss();
 
                        }
 
@@ -177,8 +183,6 @@ public class Perfil extends AppCompatActivity {
             });
 
         }
-
-
     }
     public String getRandomString() {
         SecureRandom random = new SecureRandom();
