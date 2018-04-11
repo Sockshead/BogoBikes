@@ -35,7 +35,7 @@ public class Login extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             logedIn = true;
-            Intent afterLog = new Intent(Login.this,Perfil.class);
+            Intent afterLog = new Intent(Login.this,MenuWIP.class);
             startActivity(afterLog);
         }
     }
@@ -90,7 +90,7 @@ public class Login extends AppCompatActivity {
                                 /*Intent afterLog = new Intent(Login.this,mapaParq.class);
                                 startActivity(afterLog);*/
 
-                                Intent afterLog = new Intent(Login.this,Perfil.class);
+                                Intent afterLog = new Intent(Login.this,MenuWIP.class);
                                 startActivity(afterLog);
                             } else {
                                 // If sign in fails.
