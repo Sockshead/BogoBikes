@@ -1,6 +1,9 @@
 package bogobikes.app;
 
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.media.Image;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,12 +15,33 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 
 public class Registro extends AppCompatActivity {
 
@@ -28,12 +52,16 @@ public class Registro extends AppCompatActivity {
     private ProgressDialog mProgress;
     private FirebaseDatabase mDatabase;
     private DatabaseReference myRef,myRefCU;
+    private FirebaseStorage mStorage;
+    private StorageReference mySRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
         mDatabase = FirebaseDatabase.getInstance();
+        mStorage = FirebaseStorage.getInstance();
+        mySRef =mStorage.getReference();
         myRef = mDatabase.getReference().child("Users");
         mName = findViewById(R.id.txtNombre);
         mUser = findViewById(R.id.txtEmail);
@@ -70,11 +98,13 @@ public class Registro extends AppCompatActivity {
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+
                             mProgress.dismiss();
                             if (task.isSuccessful()) {
                                 // Sign in success.
                                 Log.d(TAG, "Usuario Creado Correctamente");
                                 final FirebaseUser user = mAuth.getCurrentUser();
+                                qrCode(user);
                                 mProgress.setMessage("Iniciando Sesión...");
                                 mProgress.show();
                                 loginR(email,password,name,Integer.parseInt(cedula));
@@ -133,5 +163,44 @@ public class Registro extends AppCompatActivity {
                         }
                     }
                 });
+
+    }
+    private void qrCode(FirebaseUser user){
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try{
+            BitMatrix bitMatrix = multiFormatWriter.encode(user.getUid().toString().trim(), BarcodeFormat.QR_CODE,200,200);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 200, baos);
+            byte[] data = baos.toByteArray();
+
+                final StorageReference filePath = mySRef.child("QRCodes").child(getRandomString());
+
+            UploadTask uploadTask = filePath.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(Registro.this,exception.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    Toast.makeText(Registro.this,"Finished",Toast.LENGTH_SHORT).show();
+                    DatabaseReference currentUserDB = myRef.child(mAuth.getCurrentUser().getUid());
+                    currentUserDB.child("QR Code").setValue(downloadUrl.toString());
+                }
+            });
+        }catch(WriterException e){
+            e.printStackTrace();
+
+        }
+    }
+    public String getRandomString() {
+        SecureRandom random = new SecureRandom();
+        return new BigInteger(130, random).toString(32);
     }
 }
