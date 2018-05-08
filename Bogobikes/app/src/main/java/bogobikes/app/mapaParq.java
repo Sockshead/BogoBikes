@@ -31,6 +31,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -46,6 +47,9 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CHECK_SETTINGS = 2;
+    private static final LatLng PARQPORTN1 = new LatLng(4.754037, -74.045581);
+    private static final LatLng PARQPORTN2 = new LatLng(4.754245, -74.046684);
+
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
@@ -53,6 +57,8 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
     private LocationCallback mLocationCallback;
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mCurrentLocation;
+    private Marker mPortN1;
+    private Marker mPortN2;
 
     // Keys for storing activity state in the Bundle.
     protected final static String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
@@ -98,6 +104,10 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
         mMap = map;
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setOnMarkerClickListener(this);
+
+        // Marcadores de ubicacion de parqueaderos existentes
+        this.mPortN1 = mMap.addMarker(new MarkerOptions().position(PARQPORTN1).title("Parqueadero Portal norte 1"));
+        this.mPortN2 = mMap.addMarker(new MarkerOptions().position(PARQPORTN2).title("Parqueadero Portal norte 2"));
     }
 
     private void setUpMap() {
