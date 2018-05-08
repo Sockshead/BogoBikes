@@ -174,7 +174,7 @@ public class Registro extends AppCompatActivity {
 
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 200, baos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
 
                 final StorageReference filePath = mySRef.child("QRCodes").child(getRandomString());
