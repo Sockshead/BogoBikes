@@ -49,6 +49,7 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
     private static final int REQUEST_CHECK_SETTINGS = 2;
     private static final LatLng PARQPORTN1 = new LatLng(4.754037, -74.045581);
     private static final LatLng PARQPORTN2 = new LatLng(4.754245, -74.046684);
+    private static final LatLng PARQUNIC = new LatLng(4.703339, -74.040064);
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
@@ -57,8 +58,11 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
     private LocationCallback mLocationCallback;
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mCurrentLocation;
+
+
     private Marker mPortN1;
     private Marker mPortN2;
+    private Marker mUnic;
 
     // Keys for storing activity state in the Bundle.
     protected final static String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
@@ -108,6 +112,7 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
         // Marcadores de ubicacion de parqueaderos existentes
         this.mPortN1 = mMap.addMarker(new MarkerOptions().position(PARQPORTN1).title("Parqueadero Portal norte 1"));
         this.mPortN2 = mMap.addMarker(new MarkerOptions().position(PARQPORTN2).title("Parqueadero Portal norte 2"));
+        this.mUnic = mMap.addMarker(new MarkerOptions().position(PARQUNIC).title("Parqueadero unicentro"));
     }
 
     private void setUpMap() {
@@ -135,8 +140,8 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
     @SuppressLint("RestrictedApi")
     private void createLocationRequest(){
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setInterval(30000);
+        mLocationRequest.setFastestInterval(10000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
