@@ -1,6 +1,7 @@
 package bogobikes.app;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
@@ -108,6 +109,9 @@ public class Registro extends AppCompatActivity {
                                 mProgress.setMessage("Iniciando Sesión...");
                                 mProgress.show();
                                 loginR(email,password,name,Integer.parseInt(cedula));
+                                limpiar();
+                                Intent afterLog = new Intent(Registro.this, Login.class);
+                                startActivity(afterLog);
                             } else {
                                 // If sign in fails.
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -202,5 +206,11 @@ public class Registro extends AppCompatActivity {
     public String getRandomString() {
         SecureRandom random = new SecureRandom();
         return new BigInteger(130, random).toString(32);
+    }
+    private void limpiar(){
+        mName.setText("");
+        mUser.setText("");
+        mPassword.setText("");
+        mCedula.setText("");
     }
 }

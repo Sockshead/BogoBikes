@@ -27,7 +27,7 @@ public class MenuWIP extends AppCompatActivity {
         mapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent Prof = new Intent(MenuWIP.this,mapaParq.class);
+                Intent Prof = new Intent(MenuWIP.this,MainActivity.class);
                 startActivity(Prof);
             }
         });
