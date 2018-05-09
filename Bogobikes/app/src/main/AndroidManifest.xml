@@ -45,7 +45,11 @@
             android:name=".mapaParq"
             android:label="@string/title_activity_mapa_parq" />
         <activity android:name=".Perfil" />
-        <activity android:name=".MenuWIP"></activity>
+        <activity android:name=".MenuWIP" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

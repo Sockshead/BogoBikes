@@ -29,10 +29,10 @@ public class Login extends AppCompatActivity {
     private Boolean logedIn;
 
     @Override
-    public void onStart() {
+    protected void onStart() {
         super.onStart();
-        /*// Check if user is signed in.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        // Check if user is signed in.
+       /* FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             logedIn = true;
             Intent afterLog = new Intent(Login.this,MenuWIP.class);
@@ -40,7 +40,7 @@ public class Login extends AppCompatActivity {
         }
         else {
             logedIn=false;
-        } */
+        }*/
     }
 
     @Override
@@ -93,8 +93,11 @@ public class Login extends AppCompatActivity {
                                 /*Intent afterLog = new Intent(Login.this,mapaParq.class);
                                 startActivity(afterLog);*/
 
+
                                 Intent afterLog = new Intent(Login.this,MenuWIP.class);
                                 startActivity(afterLog);
+                                mUser.setText("");
+                                mPassword.setText("");
                             } else {
                                 // If sign in fails.
                                 mProgress.dismiss();

@@ -140,8 +140,8 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
     @SuppressLint("RestrictedApi")
     private void createLocationRequest(){
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(30000);
-        mLocationRequest.setFastestInterval(10000);
+        mLocationRequest.setInterval(60000);
+        mLocationRequest.setFastestInterval(30000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
