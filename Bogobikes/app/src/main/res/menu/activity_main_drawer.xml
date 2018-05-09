@@ -4,35 +4,31 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+        <item android:id="@+id/nav_prof"
+            android:title="Perfil" />
+        <!--android:icon="@drawable/ic_menu_camera"-->
+        <item android:id="@+id/nav_parq"
+            android:title="Parqueaderos" />
+        <!--android:icon="@drawable/ic_menu_gallery"-->
+        <item android:id="@+id/nav_settings"
+            android:title="Ajustes" />
+        <!--android:icon="@drawable/ic_menu_slideshow"-->
+        <item android:id="@+id/nav_signOff"
+            android:title="Cerrar sesion" />
+        <!--android:icon="@drawable/ic_menu_manage"-->
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
+    <!--<item android:title="Communicate">
+    <menu>
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Share" />
+        <item
+            android:id="@+id/nav_send"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Send" />
+    </menu>
+    </item>-->
 
 </menu>

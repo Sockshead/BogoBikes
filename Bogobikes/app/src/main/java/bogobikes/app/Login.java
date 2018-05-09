@@ -94,7 +94,7 @@ public class Login extends AppCompatActivity {
                                 startActivity(afterLog);*/
 
 
-                                Intent afterLog = new Intent(Login.this,MenuWIP.class);
+                                Intent afterLog = new Intent(Login.this,MainActivity.class);
                                 startActivity(afterLog);
                                 mUser.setText("");
                                 mPassword.setText("");
