@@ -109,9 +109,6 @@ public class Registro extends AppCompatActivity {
                                 mProgress.setMessage("Iniciando Sesión...");
                                 mProgress.show();
                                 loginR(email,password,name,Integer.parseInt(cedula));
-                                limpiar();
-                                Intent afterLog = new Intent(Registro.this, Login.class);
-                                startActivity(afterLog);
                             } else {
                                 // If sign in fails.
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -157,6 +154,9 @@ public class Registro extends AppCompatActivity {
                             myRefCU.child("Profile Image").setValue("Default");
                             mProgress.dismiss();
                             Log.d(TAG, "signInWithEmail:success");
+                            Intent afterLog = new Intent(Registro.this, Login.class);
+                            startActivity(afterLog);
+                            limpiar();
 
                         } else {
                             // If sign in fails.
@@ -167,6 +167,7 @@ public class Registro extends AppCompatActivity {
                         }
                     }
                 });
+
 
     }
     private void qrCode(FirebaseUser user){
