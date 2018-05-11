@@ -1,6 +1,7 @@
 package bogobikes.app;
 
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
@@ -214,4 +215,5 @@ public class Registro extends AppCompatActivity {
         mPassword.setText("");
         mCedula.setText("");
     }
+
 }

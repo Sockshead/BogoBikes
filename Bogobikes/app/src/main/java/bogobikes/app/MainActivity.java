@@ -2,6 +2,7 @@ package bogobikes.app;
 
 import android.app.ProgressDialog;
 import android.content.ClipData;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,6 +29,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.webkit.URLUtil;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -52,6 +57,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
@@ -78,7 +91,14 @@ public class MainActivity extends AppCompatActivity
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mCurrentLocation;
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     private ProgressDialog mProgress;
+    private ImageView mProfImg;
+    private TextView mPname,mPEmail;
+    private FirebaseStorage mStorage;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference myDBRef;
+    private StorageReference mySRef;
 
 
 
@@ -90,14 +110,20 @@ public class MainActivity extends AppCompatActivity
     protected final static String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
     protected final static String LOCATION_KEY = "location-key";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mStorage = FirebaseStorage.getInstance();
+        mySRef =mStorage.getReference();
+        mDatabase = FirebaseDatabase.getInstance();
+        myDBRef = mDatabase.getReference().child("Users");
         mAuth = FirebaseAuth.getInstance();
         mProgress = new ProgressDialog(MainActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +141,13 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView = navigationView.getHeaderView(0);
+        mPEmail = hView.findViewById(R.id.pEmail);
+        mProfImg = hView.findViewById(R.id.imgProfM);
+        mPname = hView.findViewById(R.id.pName);
+        this.loadUserData();
+
+
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -146,6 +179,43 @@ public class MainActivity extends AppCompatActivity
         mRequestingLocationUpdates=false;
         createLocationRequest();
         updateValuesFromBundle(savedInstanceState);
+    }
+
+    private void loadUserData() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (mAuth.getCurrentUser() != null) {
+                    myDBRef.child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            mPname.setText(String.valueOf(dataSnapshot.child("Name").getValue()));
+                            mPEmail.setText(String.valueOf(dataSnapshot.child("Email").getValue()));
+                            String imgURL = String.valueOf(dataSnapshot.child("Profile Image").getValue());
+                            if(imgURL.equalsIgnoreCase("Default")==false) {
+                                if (URLUtil.isValidUrl(imgURL)) {
+                                    Picasso.with(MainActivity.this).load(Uri.parse(imgURL)).fit().centerCrop().into(mProfImg);
+                                } else {
+                                    Toast.makeText(MainActivity.this, "unable to load profile image.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                } else {
+                    startActivity(new Intent(MainActivity.this, Login.class));
+                    finish();
+                }
+
+            }
+        };
     }
 
     @Override
@@ -304,6 +374,7 @@ public class MainActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
