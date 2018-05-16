@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Perfil">
+
+    <ImageView
+        android:id="@+id/imgProf"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/mujer" />
+
+    <TextView
+        android:id="@+id/nombre2"
+        android:layout_width="80dp"
+        android:layout_height="25dp"
+        android:layout_below="@id/imgProf"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/nombre2" />
+
+    <TextView
+        android:id="@+id/line"
+        android:layout_width="330dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/nombre2"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:src="@drawable/line" />
+
+    <TextView
+        android:id="@+id/cedula2"
+        android:layout_width="80dp"
+        android:layout_height="25dp"
+        android:layout_below="@id/line"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/cedula2" />
+
+    <TextView
+        android:id="@+id/line2"
+        android:layout_width="330dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/cedula2"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:src="@drawable/line" />
+
+    <TextView
+        android:id="@+id/email2"
+        android:layout_width="80dp"
+        android:layout_height="25dp"
+        android:layout_below="@id/line2"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/email2" />
+
+    <TextView
+        android:id="@+id/line3"
+        android:layout_width="330dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/email2"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:src="@drawable/line" />
+
+    <Button
+        android:id="@+id/codigo"
+        android:layout_width="230dp"
+        android:layout_height="75dp"
+        android:layout_below="@id/line3"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/actionbutton" />
+
+
+</RelativeLayout>
