@@ -2,6 +2,7 @@ package bogobikes.app;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -42,7 +43,6 @@ public class Perfil extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private DatabaseReference myDBRef;
     private StorageReference mySRef;
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -67,7 +67,9 @@ public class Perfil extends AppCompatActivity {
         imgProf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent();
+
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 if(intent.resolveActivity(getPackageManager())!= null){
@@ -83,7 +85,7 @@ public class Perfil extends AppCompatActivity {
                        @Override
                        public void onDataChange(DataSnapshot dataSnapshot) {
                            mProgressDialog.setMessage("Cargando Perfil");
-                           mProgressDialog.show();
+//                           mProgressDialog.show();
                            name.setText(String.valueOf(dataSnapshot.child("Name").getValue()));
                            cedula.setText(String.valueOf(dataSnapshot.child("Cedula").getValue()));
                            email.setText(String.valueOf(dataSnapshot.child("Email").getValue()));
@@ -184,6 +186,7 @@ public class Perfil extends AppCompatActivity {
 
         }
     }
+
     public String getRandomString() {
         SecureRandom random = new SecureRandom();
         return new BigInteger(130, random).toString(32);

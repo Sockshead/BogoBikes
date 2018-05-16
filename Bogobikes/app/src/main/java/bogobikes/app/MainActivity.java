@@ -1,5 +1,21 @@
 package bogobikes.app;
 
+import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -13,6 +29,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.webkit.URLUtil;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -35,15 +55,27 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
 
-public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener,
+        OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         GoogleMap.OnMarkerClickListener,
-        LocationListener {
+        LocationListener{
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CHECK_SETTINGS = 2;
@@ -58,6 +90,16 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
     private LocationCallback mLocationCallback;
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mCurrentLocation;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private ProgressDialog mProgress;
+    private ImageView mProfImg;
+    private TextView mPname,mPEmail;
+    private FirebaseStorage mStorage;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference myDBRef;
+    private StorageReference mySRef;
+
 
 
     private Marker mPortN1;
@@ -68,11 +110,47 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
     protected final static String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
     protected final static String LOCATION_KEY = "location-key";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mStorage = FirebaseStorage.getInstance();
+        mySRef =mStorage.getReference();
+        mDatabase = FirebaseDatabase.getInstance();
+        myDBRef = mDatabase.getReference().child("Users");
+        mAuth = FirebaseAuth.getInstance();
+        mProgress = new ProgressDialog(MainActivity.this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mapa_parq);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });*/
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView = navigationView.getHeaderView(0);
+        mPEmail = hView.findViewById(R.id.pEmail);
+        mProfImg = hView.findViewById(R.id.imgProfM);
+        mPname = hView.findViewById(R.id.pName);
+        this.loadUserData();
+
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -103,6 +181,75 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
         updateValuesFromBundle(savedInstanceState);
     }
 
+    private void loadUserData() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (mAuth.getCurrentUser() != null) {
+                    myDBRef.child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            mPname.setText(String.valueOf(dataSnapshot.child("Name").getValue()));
+                            mPEmail.setText(String.valueOf(dataSnapshot.child("Email").getValue()));
+                            String imgURL = String.valueOf(dataSnapshot.child("Profile Image").getValue());
+                            if(imgURL.equalsIgnoreCase("Default")==false) {
+                                if (URLUtil.isValidUrl(imgURL)) {
+                                    Picasso.with(MainActivity.this).load(Uri.parse(imgURL)).fit().centerCrop().into(mProfImg);
+                                } else {
+                                    Toast.makeText(MainActivity.this, "unable to load profile image.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                } else {
+                    startActivity(new Intent(MainActivity.this, Login.class));
+                    finish();
+                }
+
+            }
+        };
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
@@ -123,7 +270,7 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
         }
         mMap.setMyLocationEnabled(true);
 
-       mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
@@ -172,7 +319,7 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
                         // Show the dialog by calling startResolutionForResult(),
                         // and check the result in onActivityResult().
                         ResolvableApiException resolvable = (ResolvableApiException) e;
-                        resolvable.startResolutionForResult(mapaParq.this,
+                        resolvable.startResolutionForResult(MainActivity.this,
                                 REQUEST_CHECK_SETTINGS);
                     } catch (IntentSender.SendIntentException sendEx) {
                         // Ignore the error.
@@ -227,6 +374,7 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
@@ -289,6 +437,33 @@ public class mapaParq extends FragmentActivity implements OnMapReadyCallback,
         LatLng currentLoc = new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude());
         //placeMarkerOnMap(currentLoc);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 17));
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_prof) {
+            Intent Prof = new Intent(MainActivity.this,Perfil.class);
+            startActivity(Prof);
+
+        } else if (id == R.id.nav_parq) {
+
+        } else if (id == R.id.nav_settings) {
+
+        } else if (id == R.id.nav_signOff) {
+            mProgress.setMessage("Cerrando Sesión...");
+            mProgress.show();
+            mAuth.signOut();
+            Intent logIn = new Intent(MainActivity.this,Login.class);
+            startActivity(logIn);
+            mProgress.dismiss();
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
