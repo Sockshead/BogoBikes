@@ -4,16 +4,20 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_prof"
+        <item
+            android:id="@+id/nav_prof"
             android:title="Perfil" />
         <!--android:icon="@drawable/ic_menu_camera"-->
-        <item android:id="@+id/nav_parq"
+        <item
+            android:id="@+id/nav_parq"
             android:title="Parqueaderos" />
         <!--android:icon="@drawable/ic_menu_gallery"-->
-        <item android:id="@+id/nav_settings"
+        <item
+            android:id="@+id/nav_settings"
             android:title="Ajustes" />
         <!--android:icon="@drawable/ic_menu_slideshow"-->
-        <item android:id="@+id/nav_signOff"
+        <item
+            android:id="@+id/nav_signOff"
             android:title="Cerrar sesion" />
         <!--android:icon="@drawable/ic_menu_manage"-->
     </group>
