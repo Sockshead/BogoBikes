@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity
         //mGoogleApiClient.connect();
         mAuth.addAuthStateListener(mAuthListener);
     }
+
     private void loadUserData() {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -194,7 +195,6 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment).commit();
-
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
