@@ -51,14 +51,14 @@ public class ProfileFragment extends Fragment {
     private StorageReference mySRef;
     /*public ProfileFragment() {
         // Required empty public constructor
-    }
-    /*@Override
-    protected void onStart() {
-       // super.onStart();
+    }*/
+    @Override
+    public void onStart() {
+        super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
 
-    @Override
+    /*@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -79,6 +79,7 @@ public class ProfileFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance();
         myDBRef = mDatabase.getReference().child("Users");
         name = view.findViewById(R.id.line);
+        name.setText("holo");
         cedula = view.findViewById(R.id.line2);
         email = view.findViewById(R.id.line3);
         imgProf = view.findViewById(R.id.imgProf);
@@ -105,18 +106,15 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
-        Log.w(TAG, "Choko marik2");
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null) {
-                    Log.w(TAG, "Choko marik");
                     myDBRef.child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             mProgressDialog.setMessage("Cargando Perfil");
                             mProgressDialog.show();
-                            name.setTextColor(0);
                             name.setText(String.valueOf(dataSnapshot.child("Name").getValue()));
                             cedula.setText(String.valueOf(dataSnapshot.child("Cedula").getValue()));
                             email.setText(String.valueOf(dataSnapshot.child("Email").getValue()));
