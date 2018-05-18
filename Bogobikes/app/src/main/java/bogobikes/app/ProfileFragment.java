@@ -114,7 +114,7 @@ public class ProfileFragment extends Fragment {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             mProgressDialog.setMessage("Cargando Perfil");
-                            mProgressDialog.show();
+                            //mProgressDialog.show();
                             name.setText(String.valueOf(dataSnapshot.child("Name").getValue()));
                             cedula.setText(String.valueOf(dataSnapshot.child("Cedula").getValue()));
                             email.setText(String.valueOf(dataSnapshot.child("Email").getValue()));
