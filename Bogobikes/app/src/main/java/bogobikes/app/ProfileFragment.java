@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 
 import static android.app.Activity.RESULT_OK;
+import static com.facebook.login.widget.ProfilePictureView.TAG;
 
 public class ProfileFragment extends Fragment {
 
@@ -82,6 +84,8 @@ public class ProfileFragment extends Fragment {
         imgProf = view.findViewById(R.id.imgProf);
         mProgressDialog = new ProgressDialog(getActivity());
 
+
+
         imgProf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,15 +105,17 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+        Log.w(TAG, "Choko marik2");
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null) {
+                    Log.w(TAG, "Choko marik");
                     myDBRef.child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             mProgressDialog.setMessage("Cargando Perfil");
-                            //mProgressDialog.show();
+                            mProgressDialog.show();
                             name.setTextColor(0);
                             name.setText(String.valueOf(dataSnapshot.child("Name").getValue()));
                             cedula.setText(String.valueOf(dataSnapshot.child("Cedula").getValue()));
