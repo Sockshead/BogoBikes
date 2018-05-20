@@ -22,6 +22,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -181,6 +182,7 @@ public class Login extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
+
             }
 
             @Override
@@ -220,13 +222,16 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
+                            mProgress.setMessage("Iniciando Sesión via Facebook...");
+                            mProgress.show();
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             myRefCU = myRef.child(user.getUid());
                             myRefCU.child("Name").setValue(user.getDisplayName());
                             myRefCU.child("Email").setValue(user.getEmail());
-                            // myRefCU.child("Cedula").setValue(cedulaL);
+                            myRefCU.child("Cedula").setValue("Facebook User");
                             myRefCU.child("Profile Image").setValue(user.getPhotoUrl().toString());
+                            mProgress.dismiss();
                             Intent afterLog = new Intent(Login.this,MainActivity.class);
                             startActivity(afterLog);
                         } else {

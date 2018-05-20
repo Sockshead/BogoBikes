@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -192,6 +193,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_signOff) {
             mProgress.setMessage("Cerrando Sesión...");
             mProgress.show();
+            LoginManager.getInstance().logOut();
             mAuth.signOut();
             Intent logIn = new Intent(MainActivity.this,Login.class);
             startActivity(logIn);
