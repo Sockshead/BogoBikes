@@ -72,6 +72,7 @@ public class ProfileFragment extends Fragment {
 
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("Perfil");
 
+
         //setContentView(R.layout.activity_perfil);
         mAuth = FirebaseAuth.getInstance();
         mStorage = FirebaseStorage.getInstance();
