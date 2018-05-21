@@ -50,7 +50,7 @@ public class Registro extends AppCompatActivity {
     private static final String TAG ="Register" ;
     private FirebaseAuth mAuth;
     private EditText mName,mUser,mPassword,mCedula;
-    private Button mRegister;
+    private Button mRegister,mLogin;
     private ProgressDialog mProgress;
     private FirebaseDatabase mDatabase;
     private DatabaseReference myRef,myRefCU;
@@ -71,6 +71,7 @@ public class Registro extends AppCompatActivity {
         mPassword = findViewById(R.id.txtPass);
         mAuth = FirebaseAuth.getInstance();
         mRegister = findViewById(R.id.btnReg);
+        mLogin = findViewById(R.id.btnLogin);
         mProgress = new ProgressDialog(this);
         mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +79,20 @@ public class Registro extends AppCompatActivity {
                 Register();
             }
         });
+        mLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent afterLog = new Intent(Registro.this, Login.class);
+                startActivity(afterLog);
+                limpiar();
+            }
+        });
+
+
     }
+
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -115,6 +129,16 @@ public class Registro extends AppCompatActivity {
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                 Toast.makeText(Registro.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
+
+                                System.out.println("Holo"+task.getException().getMessage());
+                                if(task.getException().getMessage().equalsIgnoreCase("The email address is already in use by another account.")){
+                                    Toast.makeText(Registro.this, "Email already registered.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                if(task.getException().getMessage().equalsIgnoreCase("The given password is invalid. [ Password should be at least 6 characters ]")){
+                                    Toast.makeText(Registro.this, "Password should be at least 6 characters ",
+                                            Toast.LENGTH_SHORT).show();
+                                }
 
                             }
 

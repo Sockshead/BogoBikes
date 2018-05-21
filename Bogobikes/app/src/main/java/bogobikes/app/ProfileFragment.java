@@ -1,5 +1,6 @@
 package bogobikes.app;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -64,6 +65,9 @@ public class ProfileFragment extends Fragment {
 
     }*/
 
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,7 +110,7 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState){
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -121,7 +125,7 @@ public class ProfileFragment extends Fragment {
                             email.setText(String.valueOf(dataSnapshot.child("Email").getValue()));
                             String imgURL = String.valueOf(dataSnapshot.child("Profile Image").getValue());
                             if (URLUtil.isValidUrl(imgURL)) {
-                                Picasso.with(getActivity().getApplicationContext()).load(Uri.parse(imgURL)).fit().centerCrop().into(imgProf);
+                                Picasso.with(view.getContext()).load(Uri.parse(imgURL)).fit().centerCrop().into(imgProf);
                             } else {
                                 System.out.println("URL no valida");
                             }
@@ -133,8 +137,8 @@ public class ProfileFragment extends Fragment {
                         }
                     });
                 } else {
-                    startActivity(new Intent(getActivity(), Login.class));
-                    getActivity().finish();
+                    //startActivity(new Intent(getContext(), Login.class));
+                    //getActivity().finish();
                 }
             }
         };
