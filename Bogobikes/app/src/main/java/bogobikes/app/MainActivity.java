@@ -182,6 +182,9 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_settings) {
 
+        }else if (id == R.id.nav_qrcode) {
+            fragment= new QRcodeFragment();
+
         } else if (id == R.id.nav_signOff) {
             mProgress.setMessage("Cerrando Sesión...");
             mProgress.show();
