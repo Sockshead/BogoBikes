@@ -3,8 +3,8 @@
     <string name="title_activity_mapa_parq">Map</string>
     <string name="facebook_app_id">224001188366080</string>
     <string name="fb_login_protocol_scheme">fb224001188366080</string>
-
-
+    <string name="com.twitter.sdk.android.CONSUMER_KEY">nD2spOTwImTpqxSGAnWmrh0Vf</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET">MYnilfsiNr0Kfh1xwxLH6d6fqAXXpbbWaV7qKuQCLnIsjRzUnz</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

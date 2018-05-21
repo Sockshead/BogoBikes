@@ -40,6 +40,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterSession;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -67,20 +70,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Fragment fragment = new MapFragment();
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.frame_container, fragment).commit();
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -181,7 +173,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        Fragment fragment = null;
+        Fragment fragment =new MapFragment();
         if (id == R.id.nav_prof) {
             fragment = new ProfileFragment();
             /*Intent Prof = new Intent(MainActivity.this,Perfil.class);
@@ -193,8 +185,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_signOff) {
             mProgress.setMessage("Cerrando Sesión...");
             mProgress.show();
-            LoginManager.getInstance().logOut();
             mAuth.signOut();
+            LoginManager.getInstance().logOut();
+            SessionManager<TwitterSession> sessionManager = TwitterCore.getInstance().getSessionManager();
+            sessionManager.clearActiveSession();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_container, fragment).commit();
             Intent logIn = new Intent(MainActivity.this,Login.class);
             startActivity(logIn);
             mProgress.dismiss();
