@@ -9,6 +9,10 @@
             android:title="Perfil" />
         <!--android:icon="@drawable/ic_menu_camera"-->
         <item
+            android:id="@+id/nav_qrcode"
+            android:title="Codigo QR" />
+        <!--android:icon="@drawable/ic_menu_slideshow"-->
+        <item
             android:id="@+id/nav_parq"
             android:title="Parqueaderos" />
         <!--android:icon="@drawable/ic_menu_gallery"-->
@@ -20,6 +24,7 @@
             android:id="@+id/nav_signOff"
             android:title="Cerrar sesion" />
         <!--android:icon="@drawable/ic_menu_manage"-->
+
     </group>
 
     <!--<item android:title="Communicate">

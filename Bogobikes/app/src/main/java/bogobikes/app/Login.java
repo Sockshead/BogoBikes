@@ -1,10 +1,13 @@
 package bogobikes.app;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +26,8 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -35,6 +40,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
@@ -45,15 +56,18 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
+import java.io.ByteArrayOutputStream;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 public class Login extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private EditText mUser, mPassword;
-    private Button mLogin,mRegister;
+    private Button mLogin,mRegister,mGoogle;
     private ProgressDialog mProgress;
     private CallbackManager mCallbackManager;
     private String TAG = "Login";
@@ -99,6 +113,7 @@ public class Login extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         mStorage = FirebaseStorage.getInstance();
         mySRef =mStorage.getReference();
+        mGoogle = findViewById(R.id.btnGoogle);
         myRef = mDatabase.getReference().child("Users");
         facebookLoginButton = findViewById(R.id.btnFace);
         twitterLoginButton = findViewById(R.id.btnTwitter);
@@ -153,6 +168,20 @@ public class Login extends AppCompatActivity {
         } catch (NoSuchAlgorithmException e) {
 
         }
+        mGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+                builder.setTitle("Google Login");
+                builder.setMessage("Google Auth will be able soon.");
+                builder.setPositiveButton("OK", null);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+
+
     }
 
 
@@ -267,6 +296,7 @@ public class Login extends AppCompatActivity {
                             myRefCU.child("Email").setValue(user.getEmail());
                             myRefCU.child("Cedula").setValue("Facebook User");
                             myRefCU.child("Profile Image").setValue(user.getPhotoUrl().toString());
+                            qrCode(user);
                             mProgress.dismiss();
                             Intent afterLog = new Intent(Login.this,MainActivity.class);
                             startActivity(afterLog);
@@ -280,7 +310,7 @@ public class Login extends AppCompatActivity {
                     }
                 });
     }
-    
+
 
     private void handleTwitterSession(TwitterSession session) {
         Log.d(TAG, "handleTwitterSession:" + session);
@@ -300,6 +330,7 @@ public class Login extends AppCompatActivity {
                     myRefCU.child("Email").setValue(user.getEmail());
                     myRefCU.child("Cedula").setValue("Twitter User");
                     myRefCU.child("Profile Image").setValue(user.getPhotoUrl().toString());
+                    qrCode(user);
                     Intent afterLog = new Intent(Login.this, MainActivity.class);
                     startActivity(afterLog);
 
@@ -321,7 +352,44 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    private void qrCode(FirebaseUser user){
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try{
+            BitMatrix bitMatrix = multiFormatWriter.encode(user.getUid().toString().trim(), BarcodeFormat.QR_CODE,200,200);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
 
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+
+            final StorageReference filePath = mySRef.child("QRCodes").child(getRandomString());
+
+            UploadTask uploadTask = filePath.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(Login.this,exception.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    Toast.makeText(Login.this,"Finished",Toast.LENGTH_SHORT).show();
+                    DatabaseReference currentUserDB = myRef.child(mAuth.getCurrentUser().getUid());
+                    currentUserDB.child("QR Code").setValue(downloadUrl.toString());
+                }
+            });
+        }catch(WriterException e){
+            e.printStackTrace();
+
+        }
+    }
+    public String getRandomString() {
+        SecureRandom random = new SecureRandom();
+        return new BigInteger(130, random).toString(32);
+    }
 }
 
 

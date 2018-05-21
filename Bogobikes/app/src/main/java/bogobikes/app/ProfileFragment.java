@@ -1,6 +1,5 @@
 package bogobikes.app;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,10 +38,10 @@ import static com.facebook.login.widget.ProfilePictureView.TAG;
 
 public class ProfileFragment extends Fragment {
 
-    FirebaseAuth mAuth;
-    FirebaseAuth.AuthStateListener mAuthListener;
-    TextView name, cedula, email;
-    ImageView imgProf;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private TextView name, cedula, email;
+    private ImageView imgProf;
     private int CAMERA_REQUEST_CODE = 0;
     private ProgressDialog mProgressDialog;
     private FirebaseStorage mStorage;
