@@ -51,9 +51,15 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -67,22 +73,17 @@ public class MapFragment extends Fragment implements NavigationView.OnNavigation
         LocationListener {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CHECK_SETTINGS = 2;
-    private static final LatLng PARQPORTN1 = new LatLng(4.754037, -74.045581);
-    private static final LatLng PARQPORTN2 = new LatLng(4.754245, -74.046684);
-    private static final LatLng PARQUNIC = new LatLng(4.703339, -74.040064);
-
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference myRef;
     private GoogleMap mMap;
     private MapView mapView;
-
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private boolean mRequestingLocationUpdates;
     private LocationCallback mLocationCallback;
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mCurrentLocation;
-    private Marker mPortN1;
-    private Marker mPortN2;
-    private Marker mUnic;
+    final ArrayList<LatLng> mlatLng = new ArrayList<>();
     // Keys for storing activity state in the Bundle.
     protected final static String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
     protected final static String LOCATION_KEY = "location-key";
@@ -100,7 +101,10 @@ public class MapFragment extends Fragment implements NavigationView.OnNavigation
 
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("Mapa");
+        mDatabase = FirebaseDatabase.getInstance();
+        myRef = mDatabase.getReference().child("Parking lots");
 
+        loadParking();
 
 
         if (mGoogleApiClient == null) {
@@ -131,6 +135,30 @@ public class MapFragment extends Fragment implements NavigationView.OnNavigation
         return view;
     }
 
+    private void loadParking() {
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int number = Integer.parseInt(String.valueOf(dataSnapshot.child("Number").getValue()));
+                final int finalNumber = number;
+                for (int a = 0; a<finalNumber; a++) {
+                    final int finalA = a;
+                    double v, v1;
+                    v = Double.parseDouble(String.valueOf(dataSnapshot.child("Coordinates").child("PAR" + (finalA+1)).child("v").getValue()));
+                    v1 = Double.parseDouble(String.valueOf(dataSnapshot.child("Coordinates").child("PAR" + (finalA+1)).child("v1").getValue()));
+                    LatLng PAR = new LatLng(v,v1);
+                    mlatLng.add(PAR);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -138,8 +166,6 @@ public class MapFragment extends Fragment implements NavigationView.OnNavigation
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);
-
-
     }
 
 
@@ -276,11 +302,23 @@ public class MapFragment extends Fragment implements NavigationView.OnNavigation
         mMap = map;
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setOnMarkerClickListener(this);
-
         // Marcadores de ubicacion de parqueaderos existentes
-        this.mPortN1 = mMap.addMarker(new MarkerOptions().position(PARQPORTN1).title("Parqueadero Portal norte 1"));
-        this.mPortN2 = mMap.addMarker(new MarkerOptions().position(PARQPORTN2).title("Parqueadero Portal norte 2"));
-        this.mUnic = mMap.addMarker(new MarkerOptions().position(PARQUNIC).title("Parqueadero unicentro"));
+        for(int a=0;a<mlatLng.size();a++){
+
+            final int finalA = a;
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String nameP = String.valueOf(dataSnapshot.child("Coordinates").child("PAR" + (finalA +1)).child("Name").getValue());
+                    Marker marker= mMap.addMarker(new MarkerOptions().position(mlatLng.get(finalA)).title(nameP));
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     private void setUpMap() {
