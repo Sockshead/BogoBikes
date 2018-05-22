@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity
     private MapFragment mapFragment = new MapFragment();
     private ProfileFragment profileFragment = new ProfileFragment();
     private QRcodeFragment qrCodeFragment = new QRcodeFragment();
+    private ListParq listParq = new ListParq();
 
 
     @Override
@@ -193,7 +194,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_prof) {
             fragmentSelected = profileFragment;
         } else if (id == R.id.nav_parq) {
-
+            fragmentSelected = listParq;
         } else if (id == R.id.nav_qrcode) {
             fragmentSelected = qrCodeFragment;
         } else if (id == R.id.nav_signOff) {
@@ -203,12 +204,10 @@ public class MainActivity extends AppCompatActivity
             LoginManager.getInstance().logOut();
             SessionManager<TwitterSession> sessionManager = TwitterCore.getInstance().getSessionManager();
             sessionManager.clearActiveSession();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, fragmentSelected).commit();
             Intent logIn = new Intent(MainActivity.this, Login.class);
             startActivity(logIn);
             mProgress.dismiss();
+            return false;
         }
         /*if (fragmentSelected != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();

@@ -9,6 +9,10 @@
             android:title="Mapa" />
         <!--android:icon="@drawable/ic_menu_slideshow"-->
         <item
+            android:id="@+id/nav_parq"
+            android:title="Parqueaderos" />
+        <!--android:icon="@drawable/ic_menu_gallery"-->
+        <item
             android:id="@+id/nav_prof"
             android:title="Perfil" />
         <!--android:icon="@drawable/ic_menu_camera"-->
@@ -16,10 +20,6 @@
             android:id="@+id/nav_qrcode"
             android:title="Codigo QR" />
         <!--android:icon="@drawable/ic_menu_slideshow"-->
-        <item
-            android:id="@+id/nav_parq"
-            android:title="Parqueaderos" />
-        <!--android:icon="@drawable/ic_menu_gallery"-->
         <item
             android:id="@+id/nav_signOff"
             android:title="Cerrar sesion" />

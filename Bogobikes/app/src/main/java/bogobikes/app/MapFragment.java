@@ -84,10 +84,14 @@ public class MapFragment extends Fragment implements NavigationView.OnNavigation
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mCurrentLocation;
     final ArrayList<LatLng> mlatLng = new ArrayList<>();
+    final ArrayList<Marker> mMarker = new ArrayList<>();
     // Keys for storing activity state in the Bundle.
     protected final static String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
     protected final static String LOCATION_KEY = "location-key";
 
+    public MapFragment() {
+        // Required empty public constructor
+    }
 
     @Override
     public void onStart() {
@@ -302,6 +306,10 @@ public class MapFragment extends Fragment implements NavigationView.OnNavigation
         mMap = map;
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setOnMarkerClickListener(this);
+        arregloParq();
+    }
+
+    public void arregloParq(){
         // Marcadores de ubicacion de parqueaderos existentes
         for(int a=0;a<mlatLng.size();a++){
 
@@ -311,6 +319,7 @@ public class MapFragment extends Fragment implements NavigationView.OnNavigation
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     String nameP = String.valueOf(dataSnapshot.child("Coordinates").child("PAR" + (finalA +1)).child("Name").getValue());
                     Marker marker= mMap.addMarker(new MarkerOptions().position(mlatLng.get(finalA)).title(nameP));
+                    mMarker.add(marker);
                 }
 
                 @Override
@@ -411,5 +420,13 @@ public class MapFragment extends Fragment implements NavigationView.OnNavigation
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 17));
     }
 
+    public void encontrarMarc(String str){
+        for(int i = 0; i < mMarker.size();i++ ) {
+            if (mMarker.get(i).getTitle().equalsIgnoreCase(str)) {
+                LatLng pos = mMarker.get(i).getPosition();
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 12));
+            }
+        }
+    }
 
 }

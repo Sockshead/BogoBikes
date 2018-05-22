@@ -85,13 +85,13 @@ public class Login extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in.
        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
+        /*if(currentUser != null){
             logedIn = true;
             finish();
         }
         else {
             logedIn=false;
-        }
+        }*/
     }
 
     @Override
@@ -304,12 +304,13 @@ public class Login extends AppCompatActivity {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(Login.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                            if(task.getException().getMessage()
+                                    .equalsIgnoreCase("An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.")){
+                                Toast.makeText(Login.this, "Email already registered.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        if(task.getException().getMessage()
-                                .equalsIgnoreCase("An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.")){
-                            Toast.makeText(Login.this, "Email already registered.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
+
 
                     }
                 });
