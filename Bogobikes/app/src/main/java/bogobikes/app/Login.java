@@ -170,9 +170,9 @@ public class Login extends AppCompatActivity {
         mGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+               AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
                 builder.setTitle("Google Login");
-                builder.setMessage("Google Auth will be able soon.");
+                builder.setMessage("This feature will be available soon");
                 builder.setPositiveButton("OK", null);
                 AlertDialog dialog = builder.create();
                 dialog.show();
