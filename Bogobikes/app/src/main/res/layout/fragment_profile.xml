@@ -4,15 +4,15 @@
     android:paddingTop="15dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Perfil">
+    tools:context=".ProfileFragment">
 
     <ImageView
         android:id="@+id/imgProf"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="60dp"
         android:src="@drawable/mujer" />
 
     <TextView
@@ -21,7 +21,7 @@
         android:layout_height="25dp"
         android:layout_below="@id/imgProf"
         android:layout_centerInParent="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/nombre2" />
 
     <TextView
@@ -40,7 +40,7 @@
         android:layout_height="25dp"
         android:layout_below="@id/line"
         android:layout_centerInParent="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/cedula2" />
 
     <TextView
@@ -59,7 +59,7 @@
         android:layout_height="25dp"
         android:layout_below="@id/line2"
         android:layout_centerInParent="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/email2" />
 
     <TextView
@@ -71,15 +71,5 @@
         android:layout_marginTop="15dp"
         android:gravity="center"
         android:src="@drawable/line" />
-
-    <Button
-        android:id="@+id/codigo"
-        android:layout_width="230dp"
-        android:layout_height="75dp"
-        android:layout_below="@id/line3"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/actionbutton" />
-
 
 </RelativeLayout>

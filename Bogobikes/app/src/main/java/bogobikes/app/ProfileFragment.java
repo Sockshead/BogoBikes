@@ -48,23 +48,16 @@ public class ProfileFragment extends Fragment {
     private FirebaseDatabase mDatabase;
     private DatabaseReference myDBRef;
     private StorageReference mySRef;
-    /*public ProfileFragment() {
+
+    public ProfileFragment() {
         // Required empty public constructor
-    }*/
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
-
-    /*@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }*/
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,8 +67,6 @@ public class ProfileFragment extends Fragment {
 
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("Perfil");
 
-
-        //setContentView(R.layout.activity_perfil);
         mAuth = FirebaseAuth.getInstance();
         mStorage = FirebaseStorage.getInstance();
         mySRef = mStorage.getReference();
@@ -103,7 +94,6 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
-        // Inflate the layout for this fragment
         return view;
     }
 
@@ -134,9 +124,6 @@ public class ProfileFragment extends Fragment {
                         public void onCancelled(DatabaseError databaseError) {
                         }
                     });
-                } else {
-                    //startActivity(new Intent(getContext(), Login.class));
-                    //getActivity().finish();
                 }
             }
         };
@@ -144,7 +131,6 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             if (mAuth.getCurrentUser() == null)

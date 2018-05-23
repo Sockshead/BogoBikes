@@ -94,6 +94,5 @@ public class QRcodeFragment extends Fragment {
             }
         };
     }
-
 }
 
