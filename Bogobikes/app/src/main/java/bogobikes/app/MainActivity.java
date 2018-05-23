@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity
     private int currentMenuItem;
     private Fragment fragmentCurrent;
 
-    private MapFragment mapFragment = new MapFragment();
+    private MapFragment mapFragment = new MapFragment(false);
     private ProfileFragment profileFragment = new ProfileFragment();
     private QRcodeFragment qrCodeFragment = new QRcodeFragment();
     private ListParq listParq = new ListParq();
