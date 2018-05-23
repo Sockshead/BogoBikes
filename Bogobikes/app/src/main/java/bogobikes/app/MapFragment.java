@@ -43,6 +43,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -88,6 +89,21 @@ public class MapFragment extends Fragment implements NavigationView.OnNavigation
     // Keys for storing activity state in the Bundle.
     protected final static String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
     protected final static String LOCATION_KEY = "location-key";
+    public boolean mapmarker1;
+    public LatLng Pos=null;
+
+    @SuppressLint("ValidFragment")
+    public MapFragment(boolean pMapmarker1) {
+        // Required empty public constructor
+        mapmarker1 = pMapmarker1;
+    }
+
+    @SuppressLint("ValidFragment")
+    public MapFragment(LatLng pPos) {
+        // Required empty public constructor
+        mapmarker1=true;
+        Pos=pPos;
+    }
 
     public MapFragment() {
         // Required empty public constructor
@@ -128,6 +144,7 @@ public class MapFragment extends Fragment implements NavigationView.OnNavigation
                 for (Location location : locationResult.getLocations()) {
                     LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
                     placeMarkerOnMap(currentLoc);
+                    if(mapmarker1==false)
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 17));
                 }
             }
@@ -306,10 +323,6 @@ public class MapFragment extends Fragment implements NavigationView.OnNavigation
         mMap = map;
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setOnMarkerClickListener(this);
-        arregloParq();
-    }
-
-    public void arregloParq(){
         // Marcadores de ubicacion de parqueaderos existentes
         for(int a=0;a<mlatLng.size();a++){
 
@@ -328,6 +341,11 @@ public class MapFragment extends Fragment implements NavigationView.OnNavigation
                 }
             });
         }
+        if ((Pos!=null)) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLng( Pos));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Pos, 18));
+        }
+
     }
 
     private void setUpMap() {
@@ -344,6 +362,7 @@ public class MapFragment extends Fragment implements NavigationView.OnNavigation
                     if (location != null) {
                         LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
                         //placeMarkerOnMap(currentLoc);
+                        if(mapmarker1==false)
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 17));
                     }
                     else{
@@ -398,7 +417,6 @@ public class MapFragment extends Fragment implements NavigationView.OnNavigation
         });
     }
 
-
     private void updateValuesFromBundle(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             if (savedInstanceState.keySet().contains(REQUESTING_LOCATION_UPDATES_KEY)) {
@@ -418,15 +436,6 @@ public class MapFragment extends Fragment implements NavigationView.OnNavigation
         LatLng currentLoc = new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude());
         //placeMarkerOnMap(currentLoc);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 17));
-    }
-
-    public void encontrarMarc(String str){
-        for(int i = 0; i < mMarker.size();i++ ) {
-            if (mMarker.get(i).getTitle().equalsIgnoreCase(str)) {
-                LatLng pos = mMarker.get(i).getPosition();
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 12));
-            }
-        }
     }
 
 }

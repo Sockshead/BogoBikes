@@ -44,8 +44,6 @@
         <activity
             android:name=".mapaParq"
             android:label="@string/title_activity_mapa_parq" />
-        <activity android:name=".Perfil" />
-        <activity android:name=".MenuWIP"></activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
